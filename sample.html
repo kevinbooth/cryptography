@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <head>
+        <title>My Sample Page</title>     
+    </head>
+    <body>
+        <form name="info">
+            <input
+                type=button
+                name="okBtn"
+                value="OK"
+                onclick="doThis();"
+            >
+            <br>
+            <input type=text name="inTxt" value="123">
+        </form>
+        <script language="JavaScript">
+            var count = 0;
+            var msg = "Hello World";
+            
+            function doThis()
+            {
+                var num;
+                var newNum;
+                
+                num = myParseInt(document.info.inTxt.value);
+                newNum = num + num;
+                document.info.inTxt.value = newNum;
+            }
+
+            function myParseInt(text) {
+                var value = 0;
+                var ascii = 0;
+                
+                for(var i = 0; i < text.length; i++) {
+                    ascii = text.charCodeAt(i);
+
+                    if (ascii < 48 || ascii > 58) {
+                        return 'NaN';
+                    }
+
+                    value = value * 10 + (ascii - 48);
+                }
+                
+                return value;
+            }
+        </script> 
+    </body>
+</html>
