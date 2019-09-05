@@ -1,6 +1,48 @@
 <!DOCTYPE html>
     <head>
-        <title>My Sample Page</title>     
+        <title>My Sample Page</title> 
+        <script language="JavaScript">
+            var count = 0;
+            var msg = "Hello World";
+            
+            function doThis() {
+                var num,
+                    newNum;
+                
+                num = myParseInt(document.info.inTxt.value);
+                newNum = factorial(num);
+                document.info.inTxt.value = newNum;
+            }
+
+            function myParseInt(text) {
+                var value = 0,
+                    ascii = 0;
+                
+                for (var i = 0; i < text.length; i++) {
+                    ascii = text.charCodeAt(i);
+
+                    if (ascii < 48 || ascii > 58)
+                        return 'NaN';
+
+                    value = value * 10 + (ascii - 48);
+                }
+                
+                return value;
+            }
+
+            function factorial(num) {
+                var fact = num;
+                
+                if (num === 0 || num === 1) 
+                    return 1; 
+                while (num > 1) { 
+                    num--;
+                    fact *= num;
+                }
+
+                return fact;
+            }
+        </script>    
     </head>
     <body>
         <form name="info">
@@ -11,38 +53,7 @@
                 onclick="doThis();"
             >
             <br>
-            <input type=text name="inTxt" value="123">
+            <input type=text name="inTxt" value="5">
         </form>
-        <script language="JavaScript">
-            var count = 0;
-            var msg = "Hello World";
-            
-            function doThis()
-            {
-                var num;
-                var newNum;
-                
-                num = myParseInt(document.info.inTxt.value);
-                newNum = num + num;
-                document.info.inTxt.value = newNum;
-            }
-
-            function myParseInt(text) {
-                var value = 0;
-                var ascii = 0;
-                
-                for(var i = 0; i < text.length; i++) {
-                    ascii = text.charCodeAt(i);
-
-                    if (ascii < 48 || ascii > 58) {
-                        return 'NaN';
-                    }
-
-                    value = value * 10 + (ascii - 48);
-                }
-                
-                return value;
-            }
-        </script> 
     </body>
 </html>
