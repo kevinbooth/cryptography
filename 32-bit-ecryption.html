@@ -18,7 +18,7 @@
         var P2 = 1;
     
         function getRandom () {
-          seed = ((P1 * seed) + P2) % N;
+          seed = (P2 + (P1 * seed)) % N;
 
           return seed;
         }
@@ -28,7 +28,7 @@
 
           for (var i = 0; i < pass.length; i++)
           {
-            value += (i + 1) * pass.charCodeAt(i);
+            value += pass.charCodeAt(i) * (i + 1);
           }
 
           return value;
