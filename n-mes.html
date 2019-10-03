@@ -1,0 +1,158 @@
+<!--
+  Author: Mike Jonas
+  Date: 10/8/14
+  Purpose: TBD
+-->
+
+<html>
+  <head>
+    <title>Encrypt/Decrypt</title>
+    <script language="JavaScript">
+      <!--
+        var N = 2147483647;
+        var P1 = 16807;
+        var P2 = 1;
+        var seed = 1;
+
+        // random generator
+        function getRandom()
+        {
+          seed = ((P1 * seed) + P2) % N;
+          return seed;
+        }
+
+        // seeder
+        function seedRandom(s)
+        {
+          seed = s;
+        }
+
+        // converts character string password to number
+        function hashPass(pass)
+        {
+          var val=0;
+          for (var i=0; i<pass.length; i++)
+          {
+            val = val + (i+1)*pass.charCodeAt(i);
+          }
+          return val;
+        }
+        
+        // C = E_k(M)
+        function encrypt(key, msg)
+        {
+          var cyph = "";  // C
+          var ascii;
+          var shift;
+          
+          seedRandom(key);
+          
+          for (var i=0; i<msg.length; i++)
+          {
+            ascii = msg.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+            
+            shift = getRandom() % 95;
+            
+            ascii = (ascii + shift) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+            
+            cyph = cyph + String.fromCharCode(ascii);
+          }
+          
+          return cyph;
+        }
+        
+        // M = D_k(C)
+        function decrypt(key, cyph)
+        {
+          var msg = "";  // M
+          var ascii;
+          var shift;
+          
+          seedRandom(key);
+          
+          for (var i=0; i<cyph.length; i++)
+          {
+            ascii = cyph.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+            
+            shift = getRandom() % 95;
+            
+            ascii = (ascii + (95 - shift)) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+            
+            msg = msg + String.fromCharCode(ascii);
+          }
+          
+          return msg;
+        }
+
+        // grabs text from source field of form and encrypts using encrypt()
+        function encryptStr()
+        {
+          var key = hashPass(document.info.passwd.value);
+          var iter = parseInt(document.info.iterations.value);
+          var str = document.info.source.value;
+
+          var cipher = encrypt(key, str);
+
+          for (var i = 0; i < iter; i++) {
+            cipher = encrypt(key, cipher);
+          }
+ 
+          document.info.dest.value = cipher;
+        }
+
+        // grabs text from dest field of form and decrypts using decrypt()
+        function decryptStr()
+        {
+          var key = hashPass(document.info.passwd.value);
+          var iter = parseInt(document.info.iterations.value);
+          var str = document.info.dest.value;
+
+          var msg = decrypt(key, str);
+
+          for (var i = 0; i < iter; i++) {
+            msg = decrypt(key, msg);
+          }
+ 
+          document.info.source.value = msg;
+        }
+      -->
+    </script>
+  </head>
+
+  <body>
+    <form name="info">
+
+      Password:
+      <input type="text"
+         name="passwd"
+         value="">
+      Iterations:
+      <input type="text"
+         name="iterations"
+         value="">
+      <br>
+
+      <input type="text"
+         name="source"
+         value="">
+      <input type="button"
+         name="encrypt"
+         value="Encrypt"
+         onclick="encryptStr();">
+      <br>
+
+      <input type="text"
+         name="dest"
+         value="">
+      <input type="button"
+         name="decrypt"
+         value="Decrypt"
+         onclick="decryptStr();">
+
+    </form>
+  </body>
+</html>
