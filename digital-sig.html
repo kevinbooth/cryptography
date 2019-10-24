@@ -1,6 +1,6 @@
 <!--
   Author: Mike Jonas
-  Date: 10/8/14
+  Date: 10/15/14
   Purpose: TBD
 -->
 
@@ -30,15 +30,10 @@
         // converts character string password to number
         function hashPass(pass)
         {
-          var val=0;
-          for (var i=0; i<pass.length; i++)
-          {
-            val = val + (i+1)*pass.charCodeAt(i);
-          }
-          return val;
+          return checkSum(pass);
         }
         
-        // C = E_k(M)
+        // C = E(M)
         function encrypt(key, msg)
         {
           var cyph = "";  // C
@@ -63,7 +58,7 @@
           return cyph;
         }
         
-        // M = D_k(C)
+        // M = D(C)
         function decrypt(key, cyph)
         {
           var msg = "";  // M
@@ -87,37 +82,30 @@
           
           return msg;
         }
-
-        // grabs text from source field of form and encrypts using encrypt()
-        function encryptStr()
+        
+        // checksum
+        function checkSum(str)
         {
-          var key = hashPass(document.info.passwd.value);
-          var iter = parseInt(document.info.iterations.value);
-          var str = document.info.source.value;
-
-          var cipher = encrypt(key, str);
-
-          for (var i = 0; i < iter; i++) {
-            cipher = encrypt(key, cipher);
+          var val=0;
+          
+          for (var i=0; i<str.length; i++)
+          {
+            val = val + (i+1)*str.charCodeAt(i);
           }
- 
-          document.info.dest.value = cipher;
+          
+          return val;
         }
-
-        // grabs text from dest field of form and decrypts using decrypt()
-        function decryptStr()
+        
+        // grabs text from a form and generates digital signature
+        function signStr()
         {
-          var key = hashPass(document.info.passwd.value);
-          var iter = parseInt(document.info.iterations.value);
-          var str = document.info.dest.value;
-
-          var msg = decrypt(key, str);
-
-          for (var i = 0; i < iter; i++) {
-            msg = decrypt(key, msg);
-          }
- 
-          document.info.source.value = msg;
+          // ADD CODE HERE
+        }
+        
+        // grabs text from a form and verifies it to signature
+        function verifyStr()
+        {
+          // ADD CODE HERE
         }
       -->
     </script>
@@ -125,34 +113,30 @@
 
   <body>
     <form name="info">
+        Password:
+        <input type="text"
+           name="passwd"
+           value="">
+        <br>
+  
+        <input type="text"
+           name="message"
+           value=""
+           style="width: 250px;">
+        <input type="button"
+           name="sign"
+           value="sign"
+           onclick="signStr();">
+        <input type="text"
+           name="verify"
+           value="">
+        <input type="button"
+           name="verifySign"
+           value="verify"
+           onclick="verifyStr();">
 
-      Password:
-      <input type="text"
-         name="passwd"
-         value="">
-Iterations:
-<input type="text"
-    name="iterations"
-    value="">
-<br>
-
-      <input type="text"
-         name="source"
-         value="">
-      <input type="button"
-         name="encrypt"
-         value="Encrypt"
-         onclick="encryptStr();">
-      <br>
-
-      <input type="text"
-         name="dest"
-         value="">
-      <input type="button"
-         name="decrypt"
-         value="Decrypt"
-         onclick="decryptStr();">
-
+           <!-- 1. checksum message (that gets unique representation) 2. encrypt checksum with password (that is digital signature) -->
+  
     </form>
   </body>
 </html>
