@@ -112,7 +112,6 @@
         {
           var key = hashPass(document.info.passwd.value);
           var verify = checkSum(document.info.message.value).toString();
-
           var unique = decrypt(key, document.info.verify.value);
 
           if (verify === unique) {
