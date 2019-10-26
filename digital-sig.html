@@ -99,13 +99,28 @@
         // grabs text from a form and generates digital signature
         function signStr()
         {
-          // ADD CODE HERE
+          var key = hashPass(document.info.passwd.value);
+          var unique = checkSum(document.info.message.value).toString();
+
+          var signature = encrypt(key, uniqueStr);
+
+          document.info.verify.value = signature;
         }
         
         // grabs text from a form and verifies it to signature
         function verifyStr()
         {
-          // ADD CODE HERE
+          var key = hashPass(document.info.passwd.value);
+          var verify = checkSum(document.info.message.value).toString();
+          var signature = document.info.verify.value;
+
+          var unique = decrypt(key, signature);
+
+          if (verify === unique) {
+            alert("Verified");
+          } else {
+            alert("Altered");
+          }
         }
       -->
     </script>
