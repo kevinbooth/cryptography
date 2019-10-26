@@ -102,7 +102,7 @@
           var key = hashPass(document.info.passwd.value);
           var unique = checkSum(document.info.message.value).toString();
 
-          var signature = encrypt(key, uniqueStr);
+          var signature = encrypt(key, unique);
 
           document.info.verify.value = signature;
         }
@@ -112,9 +112,8 @@
         {
           var key = hashPass(document.info.passwd.value);
           var verify = checkSum(document.info.message.value).toString();
-          var signature = document.info.verify.value;
 
-          var unique = decrypt(key, signature);
+          var unique = decrypt(key, document.info.verify.value);
 
           if (verify === unique) {
             alert("Verified");
