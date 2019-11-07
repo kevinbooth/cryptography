@@ -121,6 +121,34 @@
 
           document.info.output.value = output;
         }
+
+        function tryDictionary() {
+          var key = "dog,cat,pet,ant,flu,hew,hau,dab,";
+          var cyph = document.info.dest.value;
+          var msg;
+          var low;
+          var found;
+          var output = "";
+
+          for (var i = 1; i < N; i++) {
+            msg = decrypt(i, cyph);
+            low = msg.toLowerCase();
+            found = false;
+
+            for (var j = 0; j < key.length/4; j++) {
+              if (low.search(key.substr(j*4,3)) >= 0) {
+                found = true;
+                break;
+              }
+            }
+
+            if (found == true) {
+              output = output + msg + "\n";
+            }
+          }
+
+          document.info.output.value = output;
+        }
       -->
     </script>
   </head>
@@ -156,6 +184,11 @@
         name="brute"
         value="Brute Force"
         onclick="tryAll();">
+      <br />
+      <input type="button"
+        name="brutedict"
+        value="Brute Force Dictionary"
+        onclick="tryDictionary();">
       <br />
       <textarea
         name="output"
