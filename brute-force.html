@@ -1,0 +1,257 @@
+<!--
+  Name: Michael Jonas
+  Date: 11/5/14
+  Purpose: Simple decrypt/encrypt program
+-->
+<html>
+  <head>
+    <title>Encrypt/Decrypt</title>
+    <script language="JavaScript">
+      <!--
+        // global variable pointing to dictionary
+        var dict
+
+        // our values for random number generator
+        var N = 65535;
+        var P1 = 25173;
+        var P2 = 13849;
+        var seed = 1;
+
+        // random generator
+        function getRandom()
+        {
+          seed = ((P1 * seed) + P2) % N;
+          return seed;
+        }
+
+        // seeder
+        function seedRandom(s)
+        {
+          seed = s;
+        }
+
+        // converts character string password to number
+        function hashPass(pass)
+        {
+          return checkSum(pass);
+        }
+
+        // generates checksum given string
+        function checkSum(str)
+        {
+          var val=0;
+
+          for (var i=0; i<str.length; i++)
+          {
+            val = val + (i+1)*str.charCodeAt(i);
+          }
+
+          return val;
+        }
+
+        function encrypt(key, msg)
+        {
+          var cyph = "";  // C
+          var ascii;
+          var shift;
+          
+          seedRandom(key);
+          
+          for (var i=0; i<msg.length; i++)
+          {
+            ascii = msg.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+            
+            shift = getRandom() % 95;
+            
+            ascii = (ascii + shift) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+            
+            cyph = cyph + String.fromCharCode(ascii);
+          }
+          
+          return cyph;
+        }
+        
+        // M = D(C)
+        function decrypt(key, cyph)
+        {
+          var msg = "";  // M
+          var ascii;
+          var shift;
+          
+          seedRandom(key);
+          
+          for (var i=0; i<cyph.length; i++)
+          {
+            ascii = cyph.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+            
+            shift = getRandom() % 95;
+            
+            ascii = (ascii + (95 - shift)) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+            
+            msg = msg + String.fromCharCode(ascii);
+          }
+          
+          return msg;
+        }
+
+
+        // crack passwords using brute force approach
+        function crackPasswd()
+        {
+          var data;    // 150 jumbled string...this only needs to be local
+          var dStr;    // each decrypted string (150 x 65535)
+          var resStr;  // analyze will return if it finds anything
+
+          // set our data and dict variables
+          data = document.data.getElementsByTagName("label");
+          dict = document.dict.getElementsByTagName("label");
+                  
+
+          // Example of how to read data and dict lists and write to output.
+          // Generally, you have to read data since that is what you are 
+          // trying to crack. You can read dict to help you in cracking
+          // and you would only output those things you think are worthy
+          // of inspection.
+          //
+          // document.info.output.value = "Encrypted String:\n\n";
+          // for (var i=0; i<data.length; i++)
+          // {
+          //   document.info.output.value += data[i].firstChild.data + "\n";
+          // }
+          //
+          // document.info.output.value += "\n\nDictionary words:\n\n";
+          // for (var i=0; i<dict.length; i++)
+          // {
+          //   document.info.output.value += dict[i].firstChild.data + "\n";
+          // }
+
+
+          for (var i=0; i<data.length; i++)
+          {
+            document.info.output.value += "\nResults for: " + data[i].firstChild.data + "\n\n";
+            for (var j=0; j<N; j++)
+            {
+              dStr = decrypt(j, data[i].firstChild.data);
+              resStr = analyze(dStr);
+              if (resStr != "")
+              {
+                document.info.output.value += resStr + "\n";
+              }
+            }
+          }
+        }
+
+        // this function tries to find cracked passwords
+        function analyze(str)
+        {
+          var tmp;
+          var ex = /^[a-z0-9][a-z0-9 ]*$/;
+
+          // Example 1 we did in lab:
+          // Let's search for all words in dictionary. Since they are
+          // all lower case, I will do the same with my input string
+          tmp = str.toLowerCase();
+
+          if (str.includes( "2003PhdJonas")) {
+            console.log(str, tmp, str.length);
+          }
+
+          if (ex.test(tmp))
+          {
+            return str;  // found something, return original str
+          }
+
+
+          // ALL YOUR CODE GOES HERE!!!
+
+
+          return "";  // return empty string if we found nothing
+        }
+      -->
+    </script>
+  </head>
+
+  <body>
+    <form name="info">
+      <input type="button" name="Run" value="Crack Password" onclick="crackPasswd();">
+      <br>
+      Output:
+      <br>
+      <textarea name="output" rows = 20, cols = 40> </textarea>
+    </form>
+    <br>
+    List of scrambled letters (plus add your own dictionary). <br>
+    Find 12 secret passwords!
+    <table border=2>
+      <tr>
+        <th>
+          Jumbled strings
+        </th>
+        <th>
+          dictionary words
+        </th>
+      </tr>
+      <tr>
+        <td valign=top>
+          <form name="data">
+            <!--label>JsPmXD</label><br-->
+            <!--label>+Z@47E~wWx8</label><br-->
+            <!--label>`CH#L~pB/v&6F</label><b-->
+            <label>@/Xn'b7R),~61{T</label><br>
+            <!--label>+8%JN|</label><br-->
+            <!--label>VQO[!z>pOLx"%</label><br-->
+            <!--label>+$=1q4?k"ln0</label><br-->
+            <!--label>^^T2%xPfjc!_G+@</label><br-->
+            <label>%\4xuEc6'@16z~(</label><br>
+            <label>UF!Y+:-/T2</label><br>
+            <label>v2L-,6L5</label><br>
+            <label>ZV+uP{hO]FMG,/0&PT&d</label><br>
+          </form>
+        </td>
+        <td valign=top>
+          <form name="dict">
+            <label>cis</label><br>
+            <label>information</label><br>
+            <label>brute</label><br>
+            <label>denial</label><br>
+            <label>service</label><br>
+            <label>masquerade</label><br>
+            <label>wireless</label><br>
+            <label>network</label><br>
+            <label>avail</label><br>
+          </form>
+        </td>
+        <td valign=top>
+          <form name="duplicates">
+              <label>m4Q?6pogJW`</label><br>
+              <label>^aQ5,>`g"p8&;z8D</label><br>
+              <label>uG0|4~N;f</label><br>
+              <label>9=];</label><br>
+              <label>XJ yIc</label><br>
+              <label>LN1MjI;WB!hz$S</label><br>
+              <label>j{,aL</label><br>
+              <label>'z[:cpjvE4[S</label><br>
+              <label>a$56W3v</label><br>
+              <label>9~]6>~l@%Qq6z):</label><br>
+              <label>W8g6\${T>=l6k~b'R</label><br>
+              <label>qm4Q?</label><br>
+              <label>pogJW`!^aQ5</label><br>
+              <label>>`g"p8</label><br>
+              <label>;z8D@9=];4LN1MjI;WB</label><br>
+              <label>hz$S;</label><br>
+              <label>G0|4~N;f=X</label><br>
+              <label> yIc>j</label><br>
+              <label>:hW8</label><br>
+              <label>6\${T>=l6k~b'RB</label><br>
+              <label>,aLD'z[:cpjvE4[SOa</label><br>
+              <label>56W3v19~]6>~l@%Qq6z</label><br>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
